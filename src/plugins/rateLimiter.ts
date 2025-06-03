@@ -10,10 +10,5 @@ export async function registerRateLimiter(app: FastifyInstance): Promise<void> {
       "x-ratelimit-remaining": true,
       "x-ratelimit-reset": true,
     },
-    errorResponseBuilder: () => ({
-      statusCode: 429,
-      error: "Too Many Requests",
-      message: "You have exceeded the request limit.",
-    }),
   });
 }

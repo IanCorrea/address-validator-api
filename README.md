@@ -82,12 +82,31 @@ npm run test:addresses
 
 The API uses `@fastify/rate-limit` through a dedicated plugin (`src/plugins/rateLimiter.ts`).
 
-- Current config: `max: 10 request every 5 seconds`
+- Current config: `max: 10 requests every 5 seconds`
 - Adds headers:
   - `x-ratelimit-limit`
   - `x-ratelimit-remaining`
   - `x-ratelimit-reset`
   - `Retry-After`
+
+### Example plugin implementation:
+
+```ts
+import rateLimit from "@fastify/rate-limit";
+import { FastifyInstance } from "fastify";
+
+export async function registerRateLimiter(app: FastifyInstance): Promise<void> {
+  await app.register(rateLimit, {
+    max: 10,
+    timeWindow: "5 seconds",
+    addHeaders: {
+      "x-ratelimit-limit": true,
+      "x-ratelimit-remaining": true,
+      "x-ratelimit-reset": true,
+    },
+  });
+}
+```
 
 Example response when limit is exceeded:
 
